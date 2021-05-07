@@ -45,7 +45,7 @@ jobs:
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: msgpack-c/msgpack-c.tgz
+          file: msgpack-c.tgz
           asset_name: msgpack-c-linux.tgz
           tag: ${{ github.ref }}
           overwrite: true
