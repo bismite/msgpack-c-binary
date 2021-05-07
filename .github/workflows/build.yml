@@ -1,8 +1,5 @@
 name: Build
-on:
-  push:
-    tags:
-      - '*'
+on: [push]
 jobs:
   macOS:
     runs-on: macos-10.15
@@ -11,10 +8,14 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: compile
+      - name: cmake
         working-directory: ./msgpack-c
         run: cmake .
+      - name: make
+        working-directory: ./msgpack-c
         run: make
+      - name: archive
+        working-directory: ./msgpack-c
         run: tar czf msgpack-c.tgz *.dylib include/ COPYING
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -29,10 +30,14 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - name: compile
+      - name: cmake
         working-directory: ./msgpack-c
         run: cmake .
+      - name: make
+        working-directory: ./msgpack-c
         run: make
+      - name: archive
+        working-directory: ./msgpack-c
         run: tar czf msgpack-c.tgz libmsgpackc.so* include/ COPYING
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
