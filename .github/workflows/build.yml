@@ -63,7 +63,7 @@ jobs:
         run: cmake .
       - name: compile
         working-directory: ./msgpack-c
-        run: x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 src/* -I./include -I./include/msgpack -shared -o libmsgpack.dll
+        run: x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 src/* -I./include -I./include/msgpack -shared -o libmsgpackc.dll
       - name: archive
         run: tar czf msgpack-c.tgz msgpack-c/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING
       - name: Upload binaries to release
