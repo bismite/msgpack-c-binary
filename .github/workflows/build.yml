@@ -49,3 +49,28 @@ jobs:
           asset_name: msgpack-c-linux.tgz
           tag: ${{ github.ref }}
           overwrite: true
+  mingw-w64:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install dependencies
+        run: sudo apt-get install mingw-w64
+      - name: Check out repository code
+        uses: actions/checkout@v2
+          with:
+            submodules: recursive
+      - name: cmake
+        working-directory: ./msgpack-c
+        run: cmake .
+      - name: compile
+        working-directory: ./msgpack-c
+        run: x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 src/* -I./include -I./include/msgpack -shared -o libmsgpack.dll
+      - name: archive
+        run: tar czf msgpack-c.tgz msgpack-c/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING
+      - name: Upload binaries to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: msgpack-c.tgz
+          asset_name: msgpack-c.tgz-x86_64-w64-mingw32.tgz
+          tag: ${{ github.ref }}
+          overwrite: true
