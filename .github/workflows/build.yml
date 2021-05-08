@@ -13,14 +13,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: cmake
-        working-directory: ./msgpack-c
-        run: cmake .
+      - run: mkdir -p msgpack-c/lib
       - name: make
-        working-directory: ./msgpack-c
-        run: clang -Wall -s -Os -DNDEBUG -g0 src/* -I./include -I./include/msgpack -shared -o libmsgpackc.2.0.0.dylib -arch arm64 -arch x86_64
-      - name: archive
-        run: tar czf msgpack-c.tgz msgpack-c/*.dylib msgpack-c/include/ msgpack-c/COPYING
+        working-directory: msgpack-c/lib
+        run: |
+          cmake ..
+          clang -Wall -O3 -DNDEBUG -g0 ../src/* -I./include -I./include/msgpack -I../include -I../include/msgpack -shared -o libmsgpackc.2.0.0.dylib -arch arm64 -arch x86_64
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/*.dylib msgpack-c/include/ msgpack-c/COPYING
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -36,14 +35,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: cmake
-        working-directory: ./msgpack-c
-        run: cmake .
+      - run: mkdir -p msgpack-c/lib
       - name: make
-        working-directory: ./msgpack-c
-        run: make
-      - name: archive
-        run: tar czf msgpack-c.tgz msgpack-c/libmsgpackc.so* msgpack-c/include/ msgpack-c/COPYING
+        working-directory: msgpack-c/lib
+        run: |
+          cmake ..
+          make
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so* msgpack-c/include/ msgpack-c/COPYING
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -61,14 +59,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: recursive
-      - name: cmake
-        working-directory: ./msgpack-c
-        run: cmake .
-      - name: compile
-        working-directory: ./msgpack-c
-        run: x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 src/* -I./include -I./include/msgpack -shared -o libmsgpackc.dll
-      - name: archive
-        run: tar czf msgpack-c.tgz msgpack-c/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING
+      - run: mkdir -p msgpack-c/lib
+      - name: make
+        working-directory: msgpack-c/lib
+        run: |
+          cmake ..
+          x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 ../src/* -I./include -I./include/msgpack -I../include -I../include/msgpack -shared -o libmsgpackc.dll
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
