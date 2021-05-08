@@ -18,7 +18,8 @@ jobs:
         working-directory: msgpack-c/lib
         run: |
           cmake ..
-          clang -Wall -O3 -DNDEBUG -g0 ../src/* -I./include -I./include/msgpack -I../include -I../include/msgpack -shared -o libmsgpackc.2.0.0.dylib -arch arm64 -arch x86_64
+          cp -Rf ../include ./
+          clang -Wall -O3 -DNDEBUG -g0 ../src/* -I./include -shared -o libmsgpackc.2.0.0.dylib -arch arm64 -arch x86_64
           install_name_tool -id @rpath/libmsgpackc.2.0.0.dylib libmsgpackc.2.0.0.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.2.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.dylib
@@ -67,7 +68,8 @@ jobs:
         working-directory: msgpack-c/lib
         run: |
           cmake ..
-          x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 ../src/* -I./include -I./include/msgpack -I../include -I../include/msgpack -shared -o libmsgpackc.dll
+          cp -Rf ../include ./
+          x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 ../src/* -I./include -shared -o libmsgpackc.dll
       - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
