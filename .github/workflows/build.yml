@@ -15,7 +15,7 @@ jobs:
         run: cmake .
       - name: make
         working-directory: ./msgpack-c
-        run: clang -Wall -s -Os -DNDEBUG -g0 src/* -I./include -I./include/msgpack -shared -o libmsgpackc.dylib -arch arm64 -arch x86_64
+        run: clang -Wall -s -Os -DNDEBUG -g0 src/* -I./include -I./include/msgpack -shared -o libmsgpackc.2.0.0.dylib -arch arm64 -arch x86_64
       - name: archive
         run: tar czf msgpack-c.tgz msgpack-c/*.dylib msgpack-c/include/ msgpack-c/COPYING
       - name: Upload binaries to release
