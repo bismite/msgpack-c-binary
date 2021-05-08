@@ -71,6 +71,6 @@ jobs:
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: msgpack-c.tgz
-          asset_name: msgpack-c.tgz-x86_64-w64-mingw32.tgz
+          asset_name: msgpack-c-x86_64-w64-mingw32.tgz
           tag: ${{ github.ref }}
           overwrite: true
