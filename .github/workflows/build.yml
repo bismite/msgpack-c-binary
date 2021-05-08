@@ -23,7 +23,7 @@ jobs:
           install_name_tool -id @rpath/libmsgpackc.2.0.0.dylib libmsgpackc.2.0.0.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.2.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.dylib
-      - run: tar czf msgpack-c.tgz msgpack-c/lib/*.dylib msgpack-c/include/ msgpack-c/COPYING
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/*.dylib msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -45,7 +45,7 @@ jobs:
         run: |
           cmake ..
           make
-      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so* msgpack-c/include/ msgpack-c/COPYING
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so* msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -70,7 +70,7 @@ jobs:
           cmake ..
           cp -Rf ./include ../
           x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 ../src/* -I../include -shared -o libmsgpackc.dll
-      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
