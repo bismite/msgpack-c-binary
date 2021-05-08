@@ -19,6 +19,7 @@ jobs:
         run: |
           cmake ..
           clang -Wall -O3 -DNDEBUG -g0 ../src/* -I./include -I./include/msgpack -I../include -I../include/msgpack -shared -o libmsgpackc.2.0.0.dylib -arch arm64 -arch x86_64
+          install_name_tool -id @rpath/libmsgpackc.2.0.0.dylib libmsgpackc.2.0.0.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.2.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.dylib
       - run: tar czf msgpack-c.tgz msgpack-c/lib/*.dylib msgpack-c/include/ msgpack-c/COPYING
