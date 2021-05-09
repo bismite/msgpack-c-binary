@@ -44,6 +44,7 @@ jobs:
         working-directory: msgpack-c/lib
         run: |
           cmake ..
+          cp -Rf ./include ../
           make
       - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so* msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
