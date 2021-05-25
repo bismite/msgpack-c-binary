@@ -45,8 +45,8 @@ jobs:
         run: |
           cmake ..
           cp -Rf ./include ../
-          make
-      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so* msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
+          clang -Wall -O3 -DNDEBUG -g0 ../src/* -I../include -fPIC -shared -o libmsgpackc.so
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -70,7 +70,7 @@ jobs:
         run: |
           cmake ..
           cp -Rf ./include ../
-          x86_64-w64-mingw32-gcc -Wall -s -Os -DNDEBUG -g0 ../src/* -I../include -shared -o libmsgpackc.dll
+          x86_64-w64-mingw32-gcc -Wall -s -O3 -DNDEBUG -g0 ../src/* -I../include -shared -o libmsgpackc.dll
       - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -94,7 +94,7 @@ jobs:
         run: |
           cmake ..
           cp -Rf ./include ../
-          emcc -Wall -Os -DNDEBUG -g0 -c ../src/* -I../include -fPIC
+          emcc -Wall -O3 -DNDEBUG -g0 -c ../src/* -I../include -fPIC
           emar rcs libmsgpackc.a *.o
       - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.a msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
