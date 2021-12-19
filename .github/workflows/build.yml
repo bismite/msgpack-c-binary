@@ -23,7 +23,9 @@ jobs:
           install_name_tool -id @rpath/libmsgpackc.2.0.0.dylib libmsgpackc.2.0.0.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.2.dylib
           ln -s libmsgpackc.2.0.0.dylib libmsgpackc.dylib
-      - run: tar czf msgpack-c.tgz msgpack-c/lib/*.dylib msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
+          clang -Wall -O3 -DNDEBUG -g0 -c ../src/* -I../include -arch arm64 -arch x86_64
+          libtool -static -o libmsgpackc.a *.o
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc*.dylib msgpack-c/lib/libmsgpackc.a msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -46,7 +48,9 @@ jobs:
           cmake ..
           cp -Rf ./include ../
           clang -Wall -O3 -DNDEBUG -g0 ../src/* -I../include -fPIC -shared -o libmsgpackc.so
-      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
+          clang -Wall -O3 -DNDEBUG -g0 -c ../src/* -I../include -fPIC
+          ar rcs libmsgpackc.a *.o
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.so msgpack-c/lib/libmsgpackc.a msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
@@ -71,7 +75,9 @@ jobs:
           cmake ..
           cp -Rf ./include ../
           x86_64-w64-mingw32-gcc -Wall -s -O3 -DNDEBUG -g0 ../src/* -I../include -shared -o libmsgpackc.dll
-      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.dll msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
+          x86_64-w64-mingw32-gcc -Wall -s -O3 -DNDEBUG -g0 -c ../src/* -I../include
+          x86_64-w64-mingw32-ar rcs libmsgpackc.a *.o
+      - run: tar czf msgpack-c.tgz msgpack-c/lib/libmsgpackc.dll msgpack-c/lib/libmsgpackc.a msgpack-c/include/ msgpack-c/COPYING msgpack-c/LICENSE_1_0.txt
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:
